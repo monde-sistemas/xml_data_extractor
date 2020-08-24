@@ -63,7 +63,7 @@ The output is:
 
 ### Defining the structure
 
-The structure should be defined as a hash inside the `schemas` key. See the [complete example](https://github.com/monde-sistemas/xml_data_extractor/blob/master/spec/examples/complete_example_spec.rb).
+The structure should be defined as a hash inside the `schemas` key. See the [complete example](https://github.com/monde-sistemas/xml_data_extractor/blob/master/spec/complete_example_spec.rb#L5).
 
 When defining the structure you can combine any available command in order to extract and format the data as needed.
 
