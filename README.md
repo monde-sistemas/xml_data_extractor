@@ -1,3 +1,5 @@
+<a href="https://badge.fury.io/rb/xml_data_extractor"><img src="https://badge.fury.io/rb/xml_data_extractor.svg" alt="Gem Version" height="18"></a>
+
 # XmlDataExtractor
 
 This gem provides a DSL for extracting formatted data from any XML structure.
