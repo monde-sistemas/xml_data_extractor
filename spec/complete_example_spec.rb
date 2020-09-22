@@ -32,7 +32,7 @@ RSpec.describe "Complete Example" do
   end
 
   let(:yml) do
-    <<~YML      
+    <<~YML
       mappers: 
         genres:     
           default: unknown
@@ -62,7 +62,7 @@ RSpec.describe "Complete Example" do
             character: char_name
     YML
   end
-  let(:structure) { YAML.load(yml).deep_symbolize_keys }
+  let(:structure) { YAML.safe_load(yml).deep_symbolize_keys }
 
   let(:custom_methods) do
     Class.new do

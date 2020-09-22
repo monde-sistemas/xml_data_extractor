@@ -5,7 +5,7 @@ require_relative "src/extract/value_builder"
 
 class XmlDataExtractor   
   def initialize(config, modifiers = nil)
-    @config = config      
+    @config = config
     @modifiers = modifiers
   end
 
@@ -18,7 +18,7 @@ class XmlDataExtractor
         value = Extract::ValueBuilder.new(Node.new(val), extractor).value
         hash[key] = value if value.present?
       end
-    end      
+    end
   end
 
   private
