@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "xml_data_extractor"
-  spec.version       = "0.1.0"
+  spec.version       = "0.2.0"
   spec.authors       = ["Fernando Almeida"]
   spec.email         = ["fernandoprsbr@gmail.com"]
 
