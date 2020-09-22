@@ -22,7 +22,7 @@ module Extract
 
       paths.map do |inner|
         if inner.is_a?(String)
-          extract_value(Node.new({ path: inner }, node_path))
+          extract_value(Node.new({ path: inner, link: node[:props][:link] }, node_path))
         else
           StringValue.new(Node.new(inner, node_path), extractor).value
         end
