@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     xml_data_extractor (0.2.0)
-      activesupport
-      nokogiri
+      activesupport (~> 6.0)
+      nokogiri (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
