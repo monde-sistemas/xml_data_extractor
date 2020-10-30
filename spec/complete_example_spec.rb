@@ -8,7 +8,8 @@ RSpec.describe "Complete Example" do
     <<~XML
       <xml>
         <movies_list>
-          <movie>            
+          <movie>    
+            <policy>Copyright © 2010 by Wily E. &amp; <br>Coyote All rights reserved.|</br></policy>
             <description>The Lord of the Rings: The Fellowship of the Ring</description>
             <total_minutes>209</total_minutes>
             <year>2001</year>

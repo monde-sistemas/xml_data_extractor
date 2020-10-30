@@ -62,7 +62,7 @@ class NodeExtractor
   private
 
   def remove_special_elements(xml)
-    CGI.unescapeHTML(xml).gsub(/<br>|&nbsp;/, { "<br>" => "", "&nbsp;" => " " })
+    CGI.unescapeHTML(xml).gsub(/<br>|<\/br>|&nbsp;/, { "&nbsp;" => " ", "<br>" => "", "</br>" => "" })
   end
 
   attr_reader :xml
