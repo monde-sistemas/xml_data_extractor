@@ -171,7 +171,6 @@ schemas:
     within: info/movie_data
     title: original_title
     actor: main_actor
-
 ```
 ```xml
 <xml>
