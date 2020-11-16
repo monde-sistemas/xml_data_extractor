@@ -186,7 +186,7 @@ schemas:
 { movie: { title: "The Irishman", actor: "Robert De Niro" } }
 ```
 
-#### unscape
+#### unescape
 
 This option is pretty usefull when you have embbed XML or HTML inside some tag, like CDATA elements, and you need to unescape them first in order to parse their content:
 
