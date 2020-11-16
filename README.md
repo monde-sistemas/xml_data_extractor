@@ -187,6 +187,42 @@ schemas:
 { movie: { title: "The Irishman", actor: "Robert De Niro" } }
 ```
 
+#### unscape
+
+This option is pretty usefull when you have embbed XML or HTML inside some tag, like CDATA elements, and you need to unescape them first in order to parse their content:
+
+```yml
+schemas:  
+  movie:
+    unescape: response
+    title: response/original_title
+    actor: response/main_actor
+
+```
+
+```xml
+<xml>
+  <response>
+    &ltoriginal_title&gt1&ltoriginal_title&gt&ltmain_actor&gt1&ltmain_actor&gt
+  </response>
+</xml>
+```
+
+This XML will be turned into this one during the parsing:
+
+```xml
+<xml>
+  <response>
+    <original_title>The Irishman</original_title>
+    <main_actor>Robert De Niro</main_actor>
+  </response>
+</xml>
+```
+
+```ruby
+{ movie: { title: "The Irishman", actor: "Robert De Niro" } }
+```
+
 #### array_of
 
 Defines the path to a XML collection, which will be looped generating an array of hashes:

@@ -6,6 +6,7 @@ require_relative "string_value"
 require_relative "value_builder"
 require_relative "within"
 require_relative "expression"
+require_relative "unescape"
 
 module Extract
   class ValueBuilder < Base
@@ -24,6 +25,9 @@ module Extract
 
     def value_for_hash
       props = node.props
+      
+      Unescape.new(node, extractor).unescape! if props[:unescape]
+
       fixed_value = props[:fixed]
       return fixed_value if fixed_value
       return ArrayOf.new(node, extractor).value if props[:array_of]

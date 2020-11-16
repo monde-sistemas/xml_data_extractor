@@ -41,7 +41,7 @@ class PathBuilder < Struct.new(:base, :parent, :tag, keyword_init: true)
   end
 end
 
-class NodeParamsExtractor < Struct.new(:node)    
+class NodeParamsExtractor < Struct.new(:node)
   def extract
     [node.path, *node.props.values_at(:in_parent, :path, :link, :attr)]
   end
@@ -49,7 +49,7 @@ end
 
 class NodeExtractor
   def initialize(xml)
-    @xml = Nokogiri::XML(remove_special_elements(xml), nil, Encoding::UTF_8.to_s)
+    @xml = Nokogiri::XML(xml)
     @xml.remove_namespaces!
   end
 
@@ -59,11 +59,17 @@ class NodeExtractor
     nil
   end
 
-  private
+  def unescape!(path)
+    node = extract(path)
+    return if node.blank?
 
-  def remove_special_elements(xml)
-    CGI.unescapeHTML(xml).gsub(/<br>|<\/br>|&nbsp;/, { "&nbsp;" => " ", "<br>" => "", "</br>" => "" })
+    first_node = node.first
+    return if first_node.elements.present?
+
+    first_node.children = Nokogiri::XML.fragment(first_node.content).children
   end
+
+  private
 
   attr_reader :xml
 end
@@ -193,7 +199,11 @@ class Extractor
     end
 
     value = path_value(path, tag, attribute)
-    format_value(value, node.props) 
+    format_value(value, node.props)
+  end
+
+  def unescape!(path)
+    node_extractor.unescape!(path)
   end
 
   def format_value(value, props)
