@@ -8,8 +8,12 @@ RSpec.describe "Complete Example" do
     <<~XML
       <xml>
         <movies_list>
-          <movie>    
-            <policy>Copyright © 2010 by Wily E. &amp; <br>Coyote All rights reserved.|</br></policy>
+          <movie>
+            <policy>
+              &lt;span style=&quot;font-family: Verdana;&quot; trebuchet=&quot;&quot; ms&quot;;=&quot;&quot; font-size:=&quot;&quot; small;=&quot;&quot; color:=&quot;&quot; rgb(102,=&quot;&quot; 102,=&quot;&quot; 102);&quot;=&quot;&quot;&gt;
+                Copyright &copy; 2010 by Wily E. &amp;amp; &lt;br&gt;Coyote All rights reserved.|&lt;/br&gt;  
+              &lt;/span&gt;
+            </policy>
             <description>The Lord of the Rings: The Fellowship of the Ring</description>
             <total_minutes>209</total_minutes>
             <year>2001</year>

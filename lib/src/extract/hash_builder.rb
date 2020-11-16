@@ -1,6 +1,6 @@
 module Extract
   class HashBuilder < Base
-    INTERNAL_FIELDS = %i[array_of keep_if within].freeze
+    INTERNAL_FIELDS = %i[array_of keep_if within unescape].freeze
 
     def value(index = 0)
       path, props = node.to_h.values_at(:path, :props)
