@@ -8,7 +8,7 @@ RSpec.describe Extract::Expression do
     it { expect(expression_class.evaluate).to eq(true)}
   end
 
-  context "when is a multiple conditions" do
+  context "when is a multiple condition" do
     let(:expression) {"'key' == '1' && 'foo' == 'bar'"}
 
     it { expect(expression_class.evaluate).to eq(true)}
