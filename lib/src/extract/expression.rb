@@ -1,5 +1,4 @@
 module Extract
-  
   class Expression
     def initialize(expression, hash)
       @expression = expression
