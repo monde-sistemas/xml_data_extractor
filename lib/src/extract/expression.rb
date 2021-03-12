@@ -1,4 +1,5 @@
 module Extract
+  
   class Expression
     def initialize(expression, hash)
       @expression = expression
@@ -6,9 +7,8 @@ module Extract
     end
 
     def evaluate
-      field_name = expression.split.first.parameterize
-      field_value = hash[field_name.to_sym]
-      condition = expression.gsub(field_name, field_value.to_s)
+      keys = Regexp.union(hash.keys.map(&:to_s))
+      condition = expression.gsub(keys, hash.stringify_keys)
 
       eval(condition)
     end
