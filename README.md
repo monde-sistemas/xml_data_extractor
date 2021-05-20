@@ -300,6 +300,81 @@ schemas:
 }
 ```
 
+### link
+
+Works as a JOIN SQL, it gets the value through the expression provided by the tag `link` and replaces the tag `<link>` contained in the tag `path` with the value to search values related to the node which you are parsing. This is needed when the data in the XML is all in the same level and this levels are linked between them and you need to navigate to each level to find all the data in the XML.
+
+Example:
+```yml
+schemas:
+  bookings:
+    array_of: booking
+    date: booking_date
+    document: id
+    products:
+      array_of:
+      accomodation:
+        path: ../hotel[booking_id=<link>]/accomodation
+        link: id
+```
+```xml
+<xml>
+  <booking>
+    <id>1</id>
+    <booking_date>2020-01-01</booking_date>
+  </booking>
+  <booking>
+    <id>2</id>
+    <booking_date>2020-01-02</booking_date>
+  </booking>
+  <hotel>
+    <booking_id>1</booking_id>
+    <accomodation>Standard</accomodation>
+  </hotel>
+  <hotel>
+    <booking_id>2</booking_id>
+    <accomodation>Premium</accomodation>
+  </hotel>
+</xml>
+```
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+      products: [
+        { accomodation: "Standard" }
+      ]
+    },
+    {
+      date: "2020-01-02",
+      document: "2"
+      products: [
+        { accomodation: "Premium" }
+      ]
+    }
+  ]
+}
+```
+
+In this example if I didn't use the `link` to get only the hotel of each booking, it would have returned two accomodations for each booking and instead of extract a string with the accomodation it would extract an array with all the accomodations for each booking.
+
+You can combine the `link` with `array_of` if you want search for a list of elements filtering by some field, just provide the `path` and the `link`:
+
+```yml
+schemas:
+  bookings:
+    array_of: booking
+    date: date
+    document: id
+    products:
+      array_of:
+        path: ../products[booking_id=<link>]
+        link: id
+      ....
+```
+
 ### Formatting:
 
 #### fixed
