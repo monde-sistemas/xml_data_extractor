@@ -375,6 +375,61 @@ schemas:
       ....
 ```
 
+### uniq_by
+
+Can only be used with **array_of**.
+
+Has a similar behavior like Ruby **uniq** method on arrays, do you provide a path to the `uniq_by` tag and then we will keep only on the array_of the paths that have a diferrent values in the path provided on the tag `uniq_by`, if the value of the path provided in the tag `uniq_by` is equal in more than one path, we will keep the first path and the remaining paths will be ignored. This functionality is useful when some node in the XML is duplicated and it is only necessary to obtain the info from one of the nodes.
+
+```yml
+schemas:
+  bookings:
+    array_of:
+      path: booking
+      uniq_by: id
+    date: bdate
+    document: id
+```
+```xml
+<xml>
+  <booking>
+    <id>1</id>
+    <bdate>2020-01-01</bdate>
+  </booking>
+  <booking>
+    <id>1</id>
+    <bdate>2020-01-01</bdate>
+  </booking>
+</xml>
+```
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+    }
+  ]
+}
+```
+
+In the example above if we don't use the tag `uniq_by` there would be extracted two elements with the same data, like:
+
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+    },
+    {
+      date: "2020-01-01",
+      document: "1"
+    }
+  ]
+}
+```
+
 ### Formatting:
 
 #### fixed
