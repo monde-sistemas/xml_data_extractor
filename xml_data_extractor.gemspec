@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Provides a simples DSL for extracting data from XML documents"
   spec.homepage      = "https://github.com/monde-sistemas/xml_data_extractor"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5")
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
