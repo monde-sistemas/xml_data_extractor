@@ -413,7 +413,7 @@ schemas:
 }
 ```
 
-In the example above if we don't use the tag `uniq_by` there would be extracted two elements with the same data, like:
+In this example if we don't use the tag `uniq_by` there would be extracted two elements with the same data, like:
 
 ```ruby
 {
@@ -438,7 +438,7 @@ Can only be used in fields that belong to a node of `array_of`.
 
 ```yml
 passengers:
-  array_of: bookings/booking/passengers
+  array_of: bookings/booking/passengers/passenger
   id:
     path: document
     modifier: to_s
@@ -491,7 +491,57 @@ passengers:
 }
 ```
 
-In the above example the field `tax_rav` was only included on the first passenger because this field has the `array_presence: first_only` property.
+In this example the field `tax_rav` was only included on the first passenger because this field has the `array_presence: first_only` property.
+
+### in_parent
+
+This option allows you to navigate to a parent node of the current node.
+
+```yml
+passengers:
+  array_of: bookings/booking/passengers/passenger
+  id:
+    path: document
+    modifier: to_s
+  bookings_id:
+    in_parent: bookings
+    path: id
+```
+```xml
+<bookings>
+  <bookings_id>8888</bookings_id>
+  <booking>
+    <passengers>
+      <passenger>
+        <document>109.111.019-79</document>
+      </passenger>
+      <passenger>
+        <document>110.155.019-78</document>
+      </passenger>
+    </passengers>
+  </booking>
+</bookings>
+```
+```ruby
+{
+  bookings: [
+    {
+      passengers: [
+        { 
+          id: "109.111.019-79",
+          bookings_id: 8888
+        },
+        { 
+          id: "110.155.019-78",
+          bookings_id: 8888
+        }
+      ]
+    }
+  ]
+}
+```
+
+In this example the value of `bookings_id` will be extracted starting at the node provided in `in_parent` instead of the current node. It's possible to navigate to a parent node with `../` too (xpath provides this functionality), but with `in_parent` you just need to provide the name of the parent node, it doesn't matters if the parent node is the parent of the current node or if it's the parent of the parent of the current node.
 
 ### Formatting:
 
