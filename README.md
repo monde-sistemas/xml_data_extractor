@@ -430,6 +430,69 @@ In the example above if we don't use the tag `uniq_by` there would be extracted 
 }
 ```
 
+### array_presence: first_only
+
+The field that contains this property will be only added to the first item of the array.
+
+Can only be used in fields that belong to a node of `array_of`.
+
+```yml
+passengers:
+  array_of: bookings/booking/passengers
+  id:
+    path: document
+    modifier: to_s
+  name:
+    attr: [FirstName, LastName]
+    modifier:
+      - name: join
+        params: [" "]
+  rav_tax:
+    array_presence: first_only
+    path: ../rav
+    modifier: to_f
+```
+```xml
+<bookings>
+  <booking>
+    <rav>150<rav>
+    <passengers>
+      <passenger>
+        <document>109.111.019-79</document>
+        <FirstName>Marcelo</FirstName>
+        <LastName>Lauxen</LastName>
+      </passenger>
+      <passenger>
+        <document>110.155.019-78</document>
+        <FirstName>Corona</FirstName>
+        <LastName>Virus</LastName>
+      </passenger>
+    </passengers>
+  </booking>
+</bookings>
+```
+```ruby
+{
+  bookings: [
+    {
+      passengers: [
+        { 
+          id: "109.111.019-79",
+          name: "Marcelo Lauxen",
+          tax_rav: 150.00 
+        },
+        { 
+          id: "110.155.019-78",
+          name: "Corona Virus"
+        }
+      ]
+    }
+  ]
+}
+```
+
+In the above example the field `tax_rav` was only included on the first passenger because this field has the `array_presence: first_only` property.
+
 ### Formatting:
 
 #### fixed
@@ -509,7 +572,7 @@ schemas:
     path: [firstname, lastname]
     modifier: 
       - name: join
-        params: [" "]    
+        params: [" "]
       - downcase      
 ```
 ```xml
