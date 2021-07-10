@@ -543,6 +543,51 @@ passengers:
 
 In this example the value of `bookings_id` will be extracted starting at the node provided in `in_parent` instead of the current node. It's possible to navigate to a parent node with `../` too (xpath provides this functionality), but with `in_parent` you just need to provide the name of the parent node, it doesn't matters if the parent node is the parent of the current node or if it's the parent of the parent of the current node.
 
+### keep_if
+
+This option allows you to keep the part of the block of the hash in the final result only if the condition matches.
+
+```yml
+schemas:
+  dummy:
+    within: data
+    description: additional_desc
+    exchange: currency_info/value
+    price: price
+    payment:
+      type: payment_info/method
+      value: payment_info/price
+      keep_if: "'type' == 'invoice'"
+```
+```xml
+<data>
+  <additional_desc>Keep walking</additional_desc>
+  <currency_info kind="USD">
+    <value>4.15</value>
+  </currency_info>
+  <price>55.09</price>
+  <payment_info>
+    <method>card</method>
+    <price>55.48</price>
+    <payment>
+      <installments>2</installments>
+      <card_number>333</card_number>
+    </payment>
+  </payment>
+<data>
+```
+```ruby
+{
+  dummy: {
+    description: "Keep walking",
+    exchange: "4.15",
+    price: "55.09"
+  }
+}
+```
+
+In this example the condition didn't match since the payment method was `card` instead of `invoice` and then the extracted payment hash was removed from the final result.
+
 ### Formatting:
 
 #### fixed
