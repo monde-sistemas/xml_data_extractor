@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "base"
 require_relative "array_value"
 require_relative "array_of"
@@ -25,7 +27,7 @@ module Extract
 
     def value_for_hash
       props = node.props
-      
+
       Unescape.new(node, extractor).unescape! if props[:unescape]
 
       fixed_value = props[:fixed]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Format
   class Modifier
     def initialize(yml, helper)

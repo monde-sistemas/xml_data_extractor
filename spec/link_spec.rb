@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yaml"
 require "json"
 
@@ -49,7 +51,7 @@ RSpec.describe "Link" do
         </Sales>
       XML
     end
-  
+
     let(:yml) do
       <<~YML
         schemas:
@@ -67,7 +69,7 @@ RSpec.describe "Link" do
                 link: ../../Locator
       YML
     end
-  
+
     let(:structure) { YAML.safe_load(yml).deep_symbolize_keys }
 
     let(:expected_result) do
@@ -82,7 +84,7 @@ RSpec.describe "Link" do
                 incentive: [["16,65", "12,61"], "3,7408000"]
               }
             ]
-          }          
+          }
         ]
       }
     end

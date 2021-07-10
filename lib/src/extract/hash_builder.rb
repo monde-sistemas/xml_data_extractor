@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Extract
   class HashBuilder < Base
     INTERNAL_FIELDS = %i[array_of keep_if within unescape].freeze

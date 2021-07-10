@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Extract
   class Within < Base
     def value

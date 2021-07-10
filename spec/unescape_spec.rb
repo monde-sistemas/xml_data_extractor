@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yaml"
 require "json"
 
@@ -8,7 +10,7 @@ RSpec.describe "Unescape" do
     shared_examples_for "match extracted values" do
       it { expect(JSON.pretty_generate(subject)).to eq JSON.pretty_generate(expected_result) }
     end
-  
+
     let(:xml) do
       <<~XML
         <xml>
@@ -16,7 +18,7 @@ RSpec.describe "Unescape" do
         </xml>
       XML
     end
-  
+
     let(:yml) do
       <<~YML
         schemas:
@@ -26,7 +28,7 @@ RSpec.describe "Unescape" do
       YML
     end
     let(:structure) { YAML.safe_load(yml).deep_symbolize_keys }
-  
+
     let(:expected_result) do
       {
         error: {
@@ -34,9 +36,9 @@ RSpec.describe "Unescape" do
         }
       }
     end
-  
+
     include_examples "match extracted values"
-  
+
     context "when the tag to be unescaped is already a valid XML node" do
       let(:xml) do
         <<~XML
@@ -51,7 +53,7 @@ RSpec.describe "Unescape" do
           </xml>
         XML
       end
-  
+
       include_examples "match extracted values"
     end
   end

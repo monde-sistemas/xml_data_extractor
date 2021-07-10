@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yaml"
 require "json"
 
@@ -11,7 +13,7 @@ RSpec.describe "Complete Example" do
           <movie>
             <policy>
               &lt;span style=&quot;font-family: Verdana;&quot; trebuchet=&quot;&quot; ms&quot;;=&quot;&quot; font-size:=&quot;&quot; small;=&quot;&quot; color:=&quot;&quot; rgb(102,=&quot;&quot; 102,=&quot;&quot; 102);&quot;=&quot;&quot;&gt;
-                Copyright &copy; 2010 by Wily E. &amp;amp; &lt;br&gt;Coyote All rights reserved.|&lt;/br&gt;  
+                Copyright &copy; 2010 by Wily E. &amp;amp; &lt;br&gt;Coyote All rights reserved.|&lt;/br&gt;
               &lt;/span&gt;
             </policy>
             <description>The Lord of the Rings: The Fellowship of the Ring</description>
@@ -30,16 +32,16 @@ RSpec.describe "Complete Example" do
                 <char_name>Gandalf</char_name>
               </actor>
             </actors>
-          </movie>    
-        </movies_list>  
+          </movie>
+        </movies_list>
       </xml>
     XML
   end
 
   let(:yml) do
     <<~YML
-      mappers: 
-        genres:     
+      mappers:
+        genres:
           default: unknown
           options:
             fiction: FIC
@@ -47,21 +49,21 @@ RSpec.describe "Complete Example" do
       schemas:
         movies:
           array_of: movies_list/movie
-          title: description            
-          year: 
-            path: year    
+          title: description
+          year:
+            path: year
             modifier: to_i
-          duration: 
-            path: total_minutes  
+          duration:
+            path: total_minutes
             modifier: minutes_to_hours
-          genre: 
+          genre:
             path: main_gen
             mapper: genres
           cast:
-            array_of: actors/actor  
-            name: 
+            array_of: actors/actor
+            name:
               path: [firstname, surname]
-              modifier: 
+              modifier:
                 name: join
                 params: [" "]
             character: char_name

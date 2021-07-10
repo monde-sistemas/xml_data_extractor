@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Extract
   class ArrayOf < Base
     def initialize(node, extractor, index = 0)

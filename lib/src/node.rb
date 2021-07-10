@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Node < Struct.new(:props, :path)
   def initialize(*)
     super
