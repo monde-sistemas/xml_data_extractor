@@ -302,7 +302,7 @@ schemas:
 
 ### link
 
-Works as a JOIN SQL, it gets the value through the expression provided by the tag `link` and replaces the tag `<link>` contained in the tag `path` with the value to search values related to the node which you are parsing. This is needed when the data in the XML is all in the same level and this levels are linked between them and you need to navigate to each level to find all the data in the XML.
+This command is useful when the XML contains references to other nodes, it works as a SQL JOIN. The path must be and expression containing the `<link>` identifier, which will be replaced by the value fetched from the `link:` command.
 
 Example:
 ```yml
@@ -379,7 +379,8 @@ schemas:
 
 Can only be used with **array_of**.
 
-Has a similar behavior like Ruby **uniq** method on arrays, do you provide a path to the `uniq_by` tag and then we will keep only on the array_of the paths that have a diferrent values in the path provided on the tag `uniq_by`, if the value of the path provided in the tag `uniq_by` is equal in more than one path, we will keep the first path and the remaining paths will be ignored. This functionality is useful when some node in the XML is duplicated and it is only necessary to obtain the info from one of the nodes.
+This functionality is useful when some XML nodes are duplicated and you want to extract data from the first occurrence only. It has a behavior similar to Ruby **uniq** method on arrays.
+For each path generated from `array_of`, the value fetched using `uniq_by` will be checked against the generated collection and the path will be discarded if the value already exists.
 
 ```yml
 schemas:
@@ -541,7 +542,7 @@ passengers:
 }
 ```
 
-In this example the value of `bookings_id` will be extracted starting at the node provided in `in_parent` instead of the current node. It's possible to navigate to a parent node with `../` too (xpath provides this functionality), but with `in_parent` you just need to provide the name of the parent node, it doesn't matters if the parent node is the parent of the current node or if it's the parent of the parent of the current node.
+In this example the value of `bookings_id` will be extracted starting at the node provided in `in_parent` instead of the current node. It's possible to navigate to a parent node with `../` too (xpath provides this functionality), but using `in_parent` you just need to provide the name of the parent node, it will navigate up until the parent node is found, no matter how many levels.
 
 ### keep_if
 
