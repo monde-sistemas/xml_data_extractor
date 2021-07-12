@@ -300,6 +300,295 @@ schemas:
 }
 ```
 
+### link
+
+This command is useful when the XML contains references to other nodes, it works as a SQL JOIN. The path must be and expression containing the `<link>` identifier, which will be replaced by the value fetched from the `link:` command.
+
+Example:
+```yml
+schemas:
+  bookings:
+    array_of: booking
+    date: booking_date
+    document: id
+    products:
+      array_of:
+      accomodation:
+        path: ../hotel[booking_id=<link>]/accomodation
+        link: id
+```
+```xml
+<xml>
+  <booking>
+    <id>1</id>
+    <booking_date>2020-01-01</booking_date>
+  </booking>
+  <booking>
+    <id>2</id>
+    <booking_date>2020-01-02</booking_date>
+  </booking>
+  <hotel>
+    <booking_id>1</booking_id>
+    <accomodation>Standard</accomodation>
+  </hotel>
+  <hotel>
+    <booking_id>2</booking_id>
+    <accomodation>Premium</accomodation>
+  </hotel>
+</xml>
+```
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+      products: [
+        { accomodation: "Standard" }
+      ]
+    },
+    {
+      date: "2020-01-02",
+      document: "2"
+      products: [
+        { accomodation: "Premium" }
+      ]
+    }
+  ]
+}
+```
+
+In this example if I didn't use the `link` to get only the hotel of each booking, it would have returned two accomodations for each booking and instead of extract a string with the accomodation it would extract an array with all the accomodations for each booking.
+
+You can combine the `link` with `array_of` if you want search for a list of elements filtering by some field, just provide the `path` and the `link`:
+
+```yml
+schemas:
+  bookings:
+    array_of: booking
+    date: date
+    document: id
+    products:
+      array_of:
+        path: ../products[booking_id=<link>]
+        link: id
+      ....
+```
+
+### uniq_by
+
+Can only be used with **array_of**.
+
+This functionality is useful when some XML nodes are duplicated and you want to extract data from the first occurrence only. It has a behavior similar to Ruby **uniq** method on arrays.
+For each path generated from `array_of`, the value fetched using `uniq_by` will be checked against the generated collection and the path will be discarded if the value already exists.
+
+```yml
+schemas:
+  bookings:
+    array_of:
+      path: booking
+      uniq_by: id
+    date: bdate
+    document: id
+```
+```xml
+<xml>
+  <booking>
+    <id>1</id>
+    <bdate>2020-01-01</bdate>
+  </booking>
+  <booking>
+    <id>1</id>
+    <bdate>2020-01-01</bdate>
+  </booking>
+</xml>
+```
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+    }
+  ]
+}
+```
+
+In this example if we don't use the tag `uniq_by` there would be extracted two elements with the same data, like:
+
+```ruby
+{
+  bookings: [
+    {
+      date: "2020-01-01",
+      document: "1"
+    },
+    {
+      date: "2020-01-01",
+      document: "1"
+    }
+  ]
+}
+```
+
+### array_presence: first_only
+
+The field that contains this property will be only added to the first item of the array.
+
+Can only be used in fields that belong to a node of `array_of`.
+
+```yml
+passengers:
+  array_of: bookings/booking/passengers/passenger
+  id:
+    path: document
+    modifier: to_s
+  name:
+    attr: [FirstName, LastName]
+    modifier:
+      - name: join
+        params: [" "]
+  rav_tax:
+    array_presence: first_only
+    path: ../rav
+    modifier: to_f
+```
+```xml
+<bookings>
+  <booking>
+    <rav>150<rav>
+    <passengers>
+      <passenger>
+        <document>109.111.019-79</document>
+        <FirstName>Marcelo</FirstName>
+        <LastName>Lauxen</LastName>
+      </passenger>
+      <passenger>
+        <document>110.155.019-78</document>
+        <FirstName>Corona</FirstName>
+        <LastName>Virus</LastName>
+      </passenger>
+    </passengers>
+  </booking>
+</bookings>
+```
+```ruby
+{
+  bookings: [
+    {
+      passengers: [
+        { 
+          id: "109.111.019-79",
+          name: "Marcelo Lauxen",
+          tax_rav: 150.00 
+        },
+        { 
+          id: "110.155.019-78",
+          name: "Corona Virus"
+        }
+      ]
+    }
+  ]
+}
+```
+
+In this example the field `tax_rav` was only included on the first passenger because this field has the `array_presence: first_only` property.
+
+### in_parent
+
+This option allows you to navigate to a parent node of the current node.
+
+```yml
+passengers:
+  array_of: bookings/booking/passengers/passenger
+  id:
+    path: document
+    modifier: to_s
+  bookings_id:
+    in_parent: bookings
+    path: id
+```
+```xml
+<bookings>
+  <bookings_id>8888</bookings_id>
+  <booking>
+    <passengers>
+      <passenger>
+        <document>109.111.019-79</document>
+      </passenger>
+      <passenger>
+        <document>110.155.019-78</document>
+      </passenger>
+    </passengers>
+  </booking>
+</bookings>
+```
+```ruby
+{
+  bookings: [
+    {
+      passengers: [
+        { 
+          id: "109.111.019-79",
+          bookings_id: 8888
+        },
+        { 
+          id: "110.155.019-78",
+          bookings_id: 8888
+        }
+      ]
+    }
+  ]
+}
+```
+
+In this example the value of `bookings_id` will be extracted starting at the node provided in `in_parent` instead of the current node. It's possible to navigate to a parent node with `../` too (xpath provides this functionality), but using `in_parent` you just need to provide the name of the parent node, it will navigate up until the parent node is found, no matter how many levels.
+
+### keep_if
+
+This option allows you to keep the part of the block of the hash in the final result only if the condition matches.
+
+```yml
+schemas:
+  dummy:
+    within: data
+    description: additional_desc
+    exchange: currency_info/value
+    price: price
+    payment:
+      type: payment_info/method
+      value: payment_info/price
+      keep_if: "'type' == 'invoice'"
+```
+```xml
+<data>
+  <additional_desc>Keep walking</additional_desc>
+  <currency_info kind="USD">
+    <value>4.15</value>
+  </currency_info>
+  <price>55.09</price>
+  <payment_info>
+    <method>card</method>
+    <price>55.48</price>
+    <payment>
+      <installments>2</installments>
+      <card_number>333</card_number>
+    </payment>
+  </payment>
+<data>
+```
+```ruby
+{
+  dummy: {
+    description: "Keep walking",
+    exchange: "4.15",
+    price: "55.09"
+  }
+}
+```
+
+In this example the condition didn't match since the payment method was `card` instead of `invoice` and then the extracted payment hash was removed from the final result.
+
 ### Formatting:
 
 #### fixed
@@ -379,7 +668,7 @@ schemas:
     path: [firstname, lastname]
     modifier: 
       - name: join
-        params: [" "]    
+        params: [" "]
       - downcase      
 ```
 ```xml
