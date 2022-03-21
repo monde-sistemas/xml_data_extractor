@@ -18,7 +18,7 @@ jobs:
         uses: ruby/setup-ruby@v1
 
       - name: Cache Ruby Dependencies
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gem-${{ hashFiles('.ruby-version') }}-${{ hashFiles('**/Gemfile.lock') }}
