@@ -39,7 +39,7 @@ class PathBuilder < Struct.new(:base, :parent, :tag, keyword_init: true)
   end
 
   def matching_tags?(item, tag)
-    item.gsub(/\[\d\]/, "") == tag
+    item.gsub(/\[\d+\]/, "") == tag
   end
 end
 
