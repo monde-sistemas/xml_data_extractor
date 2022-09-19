@@ -1,52 +1,50 @@
 PATH
   remote: .
   specs:
-    xml_data_extractor (0.6.0)
-      activesupport (~> 6.0)
+    xml_data_extractor (0.7.0)
+      activesupport (~> 7.0)
       nokogiri (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.7)
+    activesupport (7.0.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     concurrent-ruby (1.1.10)
     diff-lcs (1.5.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     mini_portile2 (2.8.0)
-    minitest (5.15.0)
-    nokogiri (1.13.3)
+    minitest (5.16.3)
+    nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     racc (1.6.0)
-    rake (12.3.3)
+    rake (13.0.6)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
       rspec-mocks (~> 3.11.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
-    rspec-expectations (3.11.0)
+    rspec-expectations (3.11.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
-    rspec-mocks (3.11.0)
+    rspec-mocks (3.11.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.11.0)
-    rspec-support (3.11.0)
+    rspec-support (3.11.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
-    zeitwerk (2.6.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  rake (~> 12.0)
+  rake (~> 13.0)
   rspec (~> 3.0)
   xml_data_extractor!
 
