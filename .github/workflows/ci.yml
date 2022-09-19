@@ -24,9 +24,6 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Setup project
-        run: bin/setup
-
       - name: Run tests
         run: |
           bin/rspec
