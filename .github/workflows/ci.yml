@@ -6,6 +6,10 @@ jobs:
   qa:
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['2.7', '3.0', '3.1']
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -14,17 +18,11 @@ jobs:
         run: |
           chmod 0444 Gemfile.lock
 
-      - name: Setup Ruby
+      - name: Setup Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
-
-      - name: Cache Ruby Dependencies
-        uses: actions/cache@v3
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('.ruby-version') }}-${{ hashFiles('**/Gemfile.lock') }}
-
-      - name: Setup project
-        run: bin/setup
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
 
       - name: Run tests
         run: |
