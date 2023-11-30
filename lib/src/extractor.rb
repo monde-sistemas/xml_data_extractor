@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "cgi"
-require "active_support/core_ext/string"
+require "active_support"
+require "active_support/core_ext"
 require_relative "format/formatter"
 
 class PathBuilder < Struct.new(:base, :parent, :tag, keyword_init: true)
