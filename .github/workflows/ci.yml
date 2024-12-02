@@ -42,6 +42,6 @@ jobs:
           MERGE_LABELS: "automerge"
           MERGE_METHOD: "squash"
           MERGE_COMMIT_MESSAGE: |
-            {pullRequest.title} (#{pullRequest.number})
-            {pullRequest.commitDetails}
+            ${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})
+            ${{ github.event.pull_request.body }}
           MERGE_DELETE_BRANCH: "true"
