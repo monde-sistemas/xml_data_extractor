@@ -6,6 +6,10 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   qa:
     timeout-minutes: 5
@@ -31,13 +35,21 @@ jobs:
       - name: Run tests
         run: |
           bin/rspec
+
+  dependabot:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve a PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
   merge:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'automerge') }}
     runs-on: ubuntu-latest
     needs: qa
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
