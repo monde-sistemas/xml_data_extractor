@@ -31,6 +31,16 @@ jobs:
       - name: Run tests
         run: |
           bin/rspec
+
+  auto-approve:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Auto approve action
+        uses: hmarr/auto-approve-action@v4
+
   merge:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'automerge') }}
     runs-on: ubuntu-latest
