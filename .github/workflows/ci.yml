@@ -1,6 +1,10 @@
 name: ci
 
-on: [push, pull_request]
+on:
+  pull_request:
+    types: [labeled, synchronize]
+  push:
+    branches: [master]
 
 jobs:
   qa:
@@ -35,11 +39,17 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Merge pull request
-        uses: pascalgn/automerge-action@v0.16.4
+        run: |
+          PR_NUMBER=$(basename "$PR_URL")
+          PR_TITLE=$(gh pr view "$PR_NUMBER" --json title -q ".title")
+          PR_BODY=$(gh pr view "$PR_NUMBER" --json body -q ".body")
+          COMMIT_MESSAGE="${PR_TITLE} (#${PR_NUMBER})"
+
+          gh pr merge "$PR_URL" --auto --squash --subject "$COMMIT_MESSAGE" --body "$PR_BODY"
         env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_LABELS: "automerge"
-          MERGE_METHOD: "squash"
-          MERGE_COMMIT_MESSAGE: "pull-request-title-and-description"
-          MERGE_DELETE_BRANCH: "true"
