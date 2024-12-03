@@ -1,6 +1,7 @@
 name: ci
 
 on:
+  pull_request_target:
   pull_request:
     types: [labeled, synchronize]
   push:
@@ -36,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    if: github.actor == 'dependabot'
+    if: github.actor == 'dependabot[bot]'
     steps:
       - name: Auto approve action
         uses: hmarr/auto-approve-action@v4
