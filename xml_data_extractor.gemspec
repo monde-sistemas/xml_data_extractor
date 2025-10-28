@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "xml_data_extractor"
-  spec.version       = "0.7.0"
+  spec.version       = "0.8.0"
   spec.authors       = ["Fernando Almeida"]
   spec.email         = ["fernandoprsbr@gmail.com"]
 
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "nokogiri", "~> 1.0"
-  spec.add_dependency "activesupport", "~> 7.0"
+  spec.add_dependency "activesupport", "~> 8.0"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
 end
